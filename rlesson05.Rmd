@@ -15,7 +15,6 @@ If missing, you can install the package with `install.packages('learnr')`.
 library(learnr)
 library(tidyverse)
 library(ggplot2)
-library(gganimate)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
@@ -37,14 +36,14 @@ ggplot(distN, aes(x = x, y = d)) +
 
 ### Compute $E(N)$ in R
 
-```{r nmean, exercise=TRUE, exercise.lines=5}
+```{r nmean, exercise=TRUE, exercise.lines=15}
 x <- 0:20 # all possible values
 
 ```
 
 ### Compute $\text{Var}(N)$ in R
 
-```{r nvar, exercise=TRUE, exercise.lines=5}
+```{r nvar, exercise=TRUE, exercise.lines=15}
 x <- 0:20 # all possible values
 
 ```
@@ -63,9 +62,9 @@ R takes alternative definition of a geometric random variable where it represent
 
 ### Working with R's Representation
 
-Suppose $Y$ represents the number of trials _until_ the first success. There is a 0.3 probability of success for each trial. Compute and plot the pmf $p(y)$ and the cdf $F(y)$ for $y=1,2,\ldots,20$, respectively.
+Suppose $Y$ represents the number of trials _until_ the first success. There is a 0.3 probability of success for each trial. Compute and plot the pmf $p(y)$ and the cdf $F(y)$ for $y=1,2,\ldots,20$
 
-```{r dgeom, exercise=TRUE, exercise.lines=10}
+```{r dgeom, exercise=TRUE, exercise.lines=15}
 y <- 1:20 # values of interest
 
 ```
