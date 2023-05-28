@@ -1,0 +1,172 @@
+---
+title: "Lecture 5: Expectation and Variance"
+output: 
+  learnr::tutorial:
+    css: css/styles.css
+runtime: shiny_prerendered
+---
+
+<!-- 
+Before running the document, make sure `learnr` package is available. 
+If missing, you can install the package with `install.packages('learnr')`.
+-->
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## R Preparation
+
+### Annotations in `ggplot`
+
+Previously, we used `ggplot` to plot curves and points. 
+
+```{r echo=TRUE}
+library(ggplot2)
+x <- 1:10
+y <- sqrt(x)
+base_plot <- ggplot(mapping = aes(x = x, y = y)) +
+  theme_classic() +
+  geom_point() +
+  geom_line() +
+  labs(title = "y is square root of x", x = "x", y = "square root of x")
+base_plot
+```
+
+You can add annotations using `annotate()`. Annotations can be in different forms. 
+
++  `text`
+
+```{r echo=TRUE}
+base_plot +  # you can save a ggplot to a variable and keep adding layers
+  annotate(
+    "text",  # specify the type of annotation
+    x = 5, y = sqrt(5), # specify reference position of the text
+    label = "Tell me something   ", # text to annotate
+    hjust = 1, vjust = 0    # you can adjust the justification of text
+  )
+```
+
++  `point`
+
+```{r echo=TRUE}
+base_plot +  
+  annotate(
+    "point",  # specify the type of annotation
+    x = 5, y = sqrt(5), # specify position 
+    shape = 17, color = "red", size = 7
+  )
+```
+
++  `segment`
+
+```{r echo=TRUE}
+base_plot +  
+  annotate(
+    "segment",  # specify the type of annotation
+    x = 5, y = sqrt(5), # specify position of text
+    xend = 0, yend = sqrt(5), # a segment also requires ends
+    color = "red", linetype = "dotted"
+  )
+```
+
+For more details, check `?annoate`.
+
+```{r helpannoatae, exercise=TRUE}
+?annotate
+```
+
+You can also draw horizontal and vertical lines by specifying the y and x intercept values only using `geom_hline()` and `geom_vline()` respectively.
+
+```{r echo=TRUE}
+base_plot +
+  geom_hline(yintercept = 2, color = "blue") +
+  geom_vline(xintercept = 4, color = "darkgreen")
+```
+
+
+#### Practice
+
+In the code chunk below, `base_plot` from above examples is available. Practice adding different annotations.
+
+```{r annotate-practice-setup}
+library(ggplot2)
+x <- 1:10
+y <- sqrt(x)
+base_plot <- ggplot(mapping = aes(x = x, y = y)) +
+  theme_classic() +
+  geom_point() +
+  geom_line() +
+  labs(title = "y is square root of x", x = "x", y = "square root of x")
+```
+
+```{r annotate-practice, exercise=TRUE, exercise.lines=20}
+base_plot
+```
+
+```{r annotate-practice-hint}
+base_plot +
+  annotate("text", x = 10, y = sqrt(10), label = "f(x) = sqrt(x)",
+           vjust = -0.5, hjust = 1) +
+  geom_vline(xintercept = 9 / 4, linetype = "dotted") +
+  geom_hline(yintercept = 3 / 2, linetype = "dotted") +
+  annotate("segment", x = 0, y = 3 / 2, xend = 9 / 4, yend = 3 / 2, 
+           color = "pink", linewidth = 2) +
+  annotate("segment", x = 9 /4, y = 1, xend = 9 / 4, yend = 3 / 2, 
+           color = "pink", linewidth = 2) +
+  annotate("point", x = 9 / 4, y = 3 / 2, 
+           shape = 19, size = 7, color = "pink")
+```
+
+## Estimating Expectations via Simulation
+
+Recall, we have been estimating probabilities via simulation based on the perspective that a probability is a long-term relative frequency. We can also show that a probability of an event is an expectation of a Bernoulli random variable. You will show this in the next Weekly Activity. In turn, it tells us that we have been estimating expectations via simulations. 
+
+### Example: My Coffee Shop
+
+Consider $D\sim\text{Pois}(4)$ from the lecture. Recall that we derived $E[D]=4$. Let's verify that the $E[D]$ represents the centre of probability mass and that we can retract the value via simulation.
+
+1. Generate $100,000$ simulated values of $\text{Pois}(4)$.
+2. Verify that $E[D]$ represents the centre of probability mass.
+  a. Sum the simulated values that are less than or equal to $E[D]$.
+  b. Sum the simulated values that are greater than $E[D]$.
+  c. Compare the sums.
+3. Compute the average of the values.
+  a. Verify the average value is close to $E[D]$.
+  
+
+
+```{r coffee-shop, exercise=TRUE, exercise.lines=10}
+
+```
+
+
+```{r coffee-shop-hint-1}
+N <- 10^5
+lambda <- 4
+sims <- rpois(N, lambda)
+sim_mean <- sum(sims) / N  # average
+```
+
+```{r coffee-shop-hint-2}
+N <- 10^5
+lambda <- 4
+sims <- rpois(N, lambda)
+sim_mean <- mean(sims)     # mean() is the function for computing the average
+```
+
+```{r coffee-shop-solution}
+N <- 10^5
+lambda <- 4
+sims <- rpois(N, lambda)
+# probability masses for values less than or equal to E[D]
+sum(lambda - sims[sims <= lambda])
+# probability masses for values greater than E[D]
+sum(sims[sims > lambda] - lambda)
+# average of the values
+sim_mean <- mean(sims)
+```
+
