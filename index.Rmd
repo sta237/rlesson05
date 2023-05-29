@@ -131,8 +131,8 @@ Consider $D\sim\text{Pois}(4)$ from the lecture. Recall that we derived $E[D]=4$
 
 1. Generate $100,000$ simulated values of $\text{Pois}(4)$.
 2. Verify that $E[D]$ represents the centre of probability mass.
-  a. Sum the simulated values that are less than or equal to $E[D]$.
-  b. Sum the simulated values that are greater than $E[D]$.
+  a. Sum distances from $E[D]$ to the simulated values that are less than or equal to $E[D]$.
+  b. Sum distances from $E[D]$ to the simulated values that are greater than $E[D]$.
   c. Compare the sums.
 3. Compute the average of the values.
   a. Verify the average value is close to $E[D]$.
